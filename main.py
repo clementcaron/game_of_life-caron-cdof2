@@ -25,14 +25,17 @@ def draw_grid(grid, generation):
     clear_console()
     print(f"Generation {generation} - To exit the program press <Ctrl-C>")
     for row in grid:
-        print(' '.join(['█' if cell else '.' for cell in row]))
+        print(''.join(['█' if cell else '.' for cell in row]))
 
 def count_neighbors(grid, row, col):
     """Count the number of live neighbors around the given cell."""
     rows, cols = len(grid), len(grid[0])
-    return sum(grid[(row + i) % rows][(col + j) % cols]
-               for i in range(-1, 2) for j in range(-1, 2)
-               if (i, j) != (0, 0))
+    count = 0
+    for i in range(-1, 2):
+        for j in range(-1, 2):
+            if (i, j) != (0, 0):
+                count += grid[(row + i) % rows][(col + j) % cols]
+    return count
 
 def update_grid(grid):
     """Update the grid for the next generation."""
@@ -43,12 +46,12 @@ def update_grid(grid):
         for col in range(cols):
             neighbors = count_neighbors(grid, row, col)
             if grid[row][col]:
-                new_grid[row][col] = 1 if neighbors in [2, 3] else 0
+                new_grid[row][col] = 1 if neighbors in {2, 3} else 0
             else:
                 new_grid[row][col] = 1 if neighbors == 3 else 0
     return new_grid
 
-def run_game(rows=20, cols=20, generations=500):
+def run_game(rows=20, cols=20, generations=500, sleep_time=0.2):
     """Run Conway's Game of Life."""
     grid = create_grid(rows, cols)
     resize_console(rows, cols)
@@ -59,7 +62,7 @@ def run_game(rows=20, cols=20, generations=500):
         if new_grid == grid:
             break
         grid = new_grid
-        time.sleep(0.2)
+        time.sleep(sleep_time)
 
     print("Simulation complete. Press <Enter> to exit.")
     input()
