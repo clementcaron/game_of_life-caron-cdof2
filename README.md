@@ -18,7 +18,7 @@ Implementation in Python of the Conway's Game of Life.
 
 Follow these steps to get a development environment running:
 
-1. Clone the GitHub repository:
+1. Open GitBash and clone the GitHub repository:
 
     ```
     git clone https://github.com/clementcaron/game_of_life-caron-cdof2.git
